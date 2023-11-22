@@ -1,0 +1,13 @@
+{
+  "name": "vite-plugin-query-string-versioning",
+  "version": "1.0.0",
+  "description": "Use file hashes in query strings instead of file name",
+  "main": "src/index.js",
+  "keywords": [
+    "vite-plugin",
+    "vite"
+  ],
+  "type": "module",
+  "author": "Bostjan Oblak",
+  "license": "MIT"
+}
