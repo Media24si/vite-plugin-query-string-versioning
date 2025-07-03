@@ -1,8 +1,12 @@
 import fs from 'fs';
 
 export default function queryStringVersioning() {
+    let config = {}
     return {
         name: 'query-string-versioning',
+        configResolved(resolvedConfig) {
+            config = resolvedConfig
+        },
         outputOptions(outputOptions) {
             outputOptions.entryFileNames = 'assets/[name].js?v=[hash]';
             outputOptions.chunkFileNames = 'assets/[name].js?v=[hash]';
@@ -13,8 +17,8 @@ export default function queryStringVersioning() {
         writeBundle(options, bundle) {
             for (let file in bundle) {
                 fs.renameSync(
-                    'public/build/' + bundle[file].fileName,
-                    'public/build/' + bundle[file].fileName.replace(/\?v=.*$/, '')
+                    config.build.outDir + '/' + bundle[file].fileName,
+                    config.build.outDir + '/' + bundle[file].fileName.replace(/\?v=.*$/, '')
                 )
                 bundle[file].fileName = bundle[file].fileName.replace(/\?v=.*$/, '');
             }
