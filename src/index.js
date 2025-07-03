@@ -8,9 +8,9 @@ export default function queryStringVersioning() {
             config = resolvedConfig
         },
         outputOptions(outputOptions) {
-            outputOptions.entryFileNames = 'assets/[name].js?v=[hash]';
-            outputOptions.chunkFileNames = 'assets/[name].js?v=[hash]';
-            outputOptions.assetFileNames = 'assets/[name].[ext]?v=[hash]';
+            outputOptions.entryFileNames = moveHashToQuery(outputOptions.entryFileNames);
+            outputOptions.chunkFileNames = moveHashToQuery(outputOptions.chunkFileNames);
+            outputOptions.assetFileNames = moveHashToQuery(outputOptions.assetFileNames);
 
             return outputOptions
         },
@@ -24,4 +24,15 @@ export default function queryStringVersioning() {
             }
         },
     }
+}
+
+function moveHashToQuery(fileName) {
+    if (fileName.includes('?v=')) {
+        return fileName
+    }
+    if (! fileName.includes('[hash')) {
+        return fileName + '?v=[hash]'
+    }
+    const hash = fileName.match(/\[hash(\:\d+)?\]/)?.[0]
+    return fileName.replace(/([._-]?\[hash(\:\d+)?\])(\[extname\]|\..+)$/, `$3?v=${hash}`)
 }
